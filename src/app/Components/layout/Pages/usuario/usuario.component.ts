@@ -9,6 +9,7 @@ import { Usuario } from '../../../../Interfaces/usuario';
 import { UsuarioService } from '../../../../Services/usuario.service';
 import { UtilidadService } from '../../../../Reutilizable/utilidad.service';
 import Swal from 'sweetalert2';
+
 import { SharedModule } from '../../../../Reutilizable/shared/shared.module';
 
 @Component({
@@ -18,9 +19,9 @@ import { SharedModule } from '../../../../Reutilizable/shared/shared.module';
   templateUrl: './usuario.component.html',
   styleUrl: './usuario.component.css'
 })
-export class UsuarioComponent implements OnInit, AfterViewInit{
+export class UsuarioComponent implements OnInit, AfterViewInit {
   columnasTabla: string[] = ['nombreCompleto', 'correo', 'rolDescripcion', 'estado', 'acciones'];
-  dataInicio:Usuario[] = [];
+  dataInicio: Usuario[] = [];
   dataListaUsuarios = new MatTableDataSource(this.dataInicio);
   @ViewChild(MatPaginator) paginacionTabla!: MatPaginator;
 
@@ -28,16 +29,16 @@ export class UsuarioComponent implements OnInit, AfterViewInit{
     private dialog: MatDialog,
     private _usuarioService: UsuarioService,
     private _utilidadService: UtilidadService
-  ){}
-  obtenerUsuarios(){
+  ) { }
+  obtenerUsuarios() {
     this._usuarioService.lista().subscribe({
       next: (data) => {
-        if(data.status)
+        if (data.status)
           this.dataListaUsuarios.data = data.value;
         else
           this._utilidadService.mostrarAlerta("No se encontraron datos", "Oops!");
       },
-      error:(e) => {}
+      error: (e) => { }
     })
   }
   ngOnInit(): void {
@@ -47,30 +48,30 @@ export class UsuarioComponent implements OnInit, AfterViewInit{
   ngAfterViewInit(): void {
     this.dataListaUsuarios.paginator = this.paginacionTabla;
   }
-  aplicarFiltroTabla(event: Event){
+  aplicarFiltroTabla(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataListaUsuarios.filter = filterValue.trim().toLocaleLowerCase();
   }
-  nuevoUsuario(){
-    this.dialog.open(ModalUsuarioComponent,{
+  nuevoUsuario() {
+    this.dialog.open(ModalUsuarioComponent, {
       disableClose: true
     }).afterClosed().subscribe(resultado => {
-      if(resultado === "true") {
+      if (resultado === "true") {
         this.obtenerUsuarios();
       }
     });
   }
-  editarUsuario(usuario:Usuario){
-    this.dialog.open(ModalUsuarioComponent,{
+  editarUsuario(usuario: Usuario) {
+    this.dialog.open(ModalUsuarioComponent, {
       disableClose: true,
       data: usuario
     }).afterClosed().subscribe(resultado => {
-      if(resultado === "true") {
+      if (resultado === "true") {
         this.obtenerUsuarios();
       }
     });
   }
-  eliminarUsuario(usuario:Usuario){
+  eliminarUsuario(usuario: Usuario) {
     Swal.fire({
       title: '¿Desea eliminar el usuario?',
       text: usuario.nombreCompleto,
@@ -81,16 +82,16 @@ export class UsuarioComponent implements OnInit, AfterViewInit{
       cancelButtonColor: '#d33',
       cancelButtonText: 'No, volver'
     }).then((resultado) => {
-      if(resultado.isConfirmed){
+      if (resultado.isConfirmed) {
         this._usuarioService.eliminar(usuario.idUsuario).subscribe({
-          next:(data)=>{
-            if(data.status){
+          next: (data) => {
+            if (data.status) {
               this._utilidadService.mostrarAlerta("El usuario fue eliminado", "Listo!");
               this.obtenerUsuarios();
-            }else
+            } else
               this._utilidadService.mostrarAlerta("No se pudo eliminar el usuario", "Error");
           },
-          error:(e) => {}
+          error: (e) => { }
         })
       }
     });
