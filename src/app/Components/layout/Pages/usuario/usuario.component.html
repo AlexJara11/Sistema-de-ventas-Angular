@@ -17,7 +17,7 @@
         <input matInput (keyup)="aplicarFiltroTabla($event)" #input>
       </mat-form-field>
 
-      <div class="mat-elevation-z2"></div>
+      <div class="mat-elevation-z2">
       <table mat-table [dataSource]="dataListaUsuarios">
 
         <ng-container matColumnDef="nombreCompleto">
@@ -66,6 +66,7 @@
       <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
       </mat-paginator>
 
+    </div>
     </mat-card-content>
   </mat-card-title>
 
