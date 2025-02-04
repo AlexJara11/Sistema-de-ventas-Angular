@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { Chart, registerables } from 'chart.js';
+import { DashBoardService } from '../../../../Services/dash-board.service';
 
 @Component({
   selector: 'app-dash-board',
@@ -7,6 +10,8 @@ import { Component } from '@angular/core';
   templateUrl: './dash-board.component.html',
   styleUrl: './dash-board.component.css'
 })
-export class DashBoardComponent {
+export class DashBoardComponent implements OnInit {
+  ngOnInit(): void {
+  }
 
 }
